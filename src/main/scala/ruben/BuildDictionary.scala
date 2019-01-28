@@ -15,8 +15,9 @@ object BuildDictionary {
       wordId = wordId + 1
       wordId
     }
-    val scol = sc.textFile(args.getOrElse("input","gs://scio-challenge/dataset/*"))
-    val words = scol.flatMap(_.split("\\s+").filter(_.nonEmpty)).distinct
+    val scol = sc.textFile(args.getOrElse("input","gs://scio-challenge/dataset/25"))
+    val words = scol.flatMap(_.split("\\s+").filter(_.nonEmpty))
+      .filter(_.matches("[A-Za-z]+")).distinct
     val mappedWords = words.map(t => t + " " + increment().toString)
 
     mappedWords.saveAsTextFile(args.getOrElse("output", "gs://scio-challenge/dictionary"))
