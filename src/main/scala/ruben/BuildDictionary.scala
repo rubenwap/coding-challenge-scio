@@ -11,13 +11,13 @@ object BuildDictionary {
 
     val (sc, args) = ContextAndArgs(cmdlineArgs)
     var wordId :Int = 0
-    def increment()  = {
+    def increment() :Int  = {
       wordId = wordId + 1
       wordId
     }
     val scol = sc.textFile(args.getOrElse("input","gs://scio-challenge/dataset/*"))
     val words = scol.flatMap(_.split("\\s+").filter(_.nonEmpty)).distinct
-    val mappedWords = words.map(t => t + "|" + increment().toString)
+    val mappedWords = words.map(t => t + " " + increment().toString)
 
     mappedWords.saveAsTextFile(args.getOrElse("output", "gs://scio-challenge/dictionary"))
 
